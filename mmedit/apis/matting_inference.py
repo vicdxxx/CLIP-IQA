@@ -66,6 +66,7 @@ def init_model(config, checkpoint=None, device='cuda:0'):
     config.model.pretrained = None
     config.test_cfg.metrics = None
     model = build_model(config.model, test_cfg=config.test_cfg)
+    print('checkpoint:', checkpoint)
     if checkpoint is not None:
         checkpoint = load_checkpoint(model, checkpoint)
 

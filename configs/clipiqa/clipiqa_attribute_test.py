@@ -4,7 +4,8 @@ exp_name = 'clipiqa'
 model = dict(
     type='CLIPIQA',
     generator=dict(
-        type='CLIPIQAFixed',
+        # type='CLIPIQAFixed',
+        type='CLIPIQAPredictor',
         backbone_name='RN50',
 
         # test Koniq and liveiwt dataset
@@ -35,7 +36,8 @@ model = dict(
     pixel_loss=dict(type='MSELoss', loss_weight=1.0, reduction='mean'))
 # model training and testing settings
 train_cfg = dict(fix_iter=5000)
-test_cfg = dict(metrics=['l1dis'], crop_border=0)
+test_cfg = dict(metrics=['PSNR'], crop_border=0)
+# test_cfg = dict(metrics=['l1dis'], crop_border=0)
 
 # dataset settings
 train_dataset_type = 'IQAKoniqDataset'
@@ -146,22 +148,22 @@ data = dict(
         times=100,
         dataset=dict(
             type=train_dataset_type,
-            img_folder='/root/4T/dataset/koniq10k/1024x768/',
-            ann_file='/root/4T/dataset/koniq10k/koniq10k_distributions_sets.csv',
+            img_folder=r'D:\Dataset\koniq10k/512x384/',
+            ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
             pipeline=train_pipeline,
             test_mode=False)),
     # val
     val=dict(
         type=val_dataset_type,
-        img_folder='/root/4T/dataset/koniq10k/1024x768/',
-        ann_file='/root/4T/dataset/koniq10k/koniq10k_distributions_sets.csv',
+        img_folder=r'D:\Dataset\koniq10k/512x384/',
+        ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
         pipeline=test_pipeline,
         test_mode=True),
     # test
     test=dict(
         type=val_dataset_type,
-        img_folder='/root/4T/dataset/koniq10k/1024x768/',
-        ann_file='/root/4T/dataset/koniq10k/koniq10k_distributions_sets.csv',
+        img_folder=r'D:\Dataset\koniq10k/512x384/',
+        ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
         pipeline=test_pipeline,
         test_mode=True),
 )

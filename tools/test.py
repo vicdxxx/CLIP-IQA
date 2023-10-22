@@ -15,8 +15,9 @@ from mmedit.models import build_model
 
 def parse_args():
     parser = argparse.ArgumentParser(description='mmediting tester')
-    parser.add_argument('config', help='test config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument('--config', default='configs/clipiqa/clipiqa_coop_koniq.py',
+                        help='train config file path')
+    parser.add_argument('--checkpoint', default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\latest.pth', help='checkpoint file')
     parser.add_argument('--seed', type=int, default=None, help='random seed')
     parser.add_argument(
         '--deterministic',
@@ -29,10 +30,10 @@ def parse_args():
         help='whether to use gpu to collect results')
     parser.add_argument(
         '--save-path',
-        default=None,
+        default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\save_image',
         type=str,
         help='path to store images and if not given, will not save image')
-    parser.add_argument('--tmpdir', help='tmp dir for writing some results')
+    parser.add_argument('--tmpdir', default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\tmpdir',help='tmp dir for writing some results')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],
