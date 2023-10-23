@@ -12,12 +12,13 @@ from mmedit.core.distributed_wrapper import DistributedDataParallelWrapper
 from mmedit.datasets import build_dataloader, build_dataset
 from mmedit.models import build_model
 
+model_dir_name = 'clipiqa_coop_koniq'
 
 def parse_args():
     parser = argparse.ArgumentParser(description='mmediting tester')
     parser.add_argument('--config', default='configs/clipiqa/clipiqa_coop_koniq.py',
                         help='train config file path')
-    parser.add_argument('--checkpoint', default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\latest.pth', help='checkpoint file')
+    parser.add_argument('--checkpoint', default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs/'+model_dir_name+'\latest.pth', help='checkpoint file')
     parser.add_argument('--seed', type=int, default=None, help='random seed')
     parser.add_argument(
         '--deterministic',
@@ -30,10 +31,10 @@ def parse_args():
         help='whether to use gpu to collect results')
     parser.add_argument(
         '--save-path',
-        default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\save_image',
+        default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs/'+model_dir_name+'\save_image',
         type=str,
         help='path to store images and if not given, will not save image')
-    parser.add_argument('--tmpdir', default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\tmpdir',help='tmp dir for writing some results')
+    parser.add_argument('--tmpdir', default=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs/'+model_dir_name+'\tmpdir',help='tmp dir for writing some results')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],

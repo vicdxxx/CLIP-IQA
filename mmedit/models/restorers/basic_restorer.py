@@ -8,7 +8,7 @@ import mmcv
 import torch
 from mmcv.runner import auto_fp16
 
-from mmedit.core import InceptionV3, psnr, ssim, tensor2img
+from mmedit.core import InceptionV3, psnr, ssim, tensor2img, l1dis
 from ..base import BaseModel
 from ..builder import build_backbone, build_loss
 from ..registry import MODELS
@@ -31,7 +31,7 @@ class BasicRestorer(BaseModel):
         test_cfg (dict): Config for testing. Default: None.
         pretrained (str): Path for pretrained model. Default: None.
     """
-    allowed_metrics = {'PSNR': psnr, 'SSIM': ssim}
+    allowed_metrics = {'PSNR': psnr, 'SSIM': ssim, 'L1DIS': l1dis}
     feature_based_metrics = ['FID', 'KID']
 
     def __init__(self,

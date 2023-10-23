@@ -6,19 +6,19 @@ model = dict(
     generator=dict(
         type='CLIPIQAPredictor',
         backbone_name='RN50',
-        # classnames=[
-        #     ['Good photo.', 'Bad photo.'],
-        # ]),
-
-        # test degradation attributes
         classnames=[
             ['Good photo.', 'Bad photo.'],
-            ['Bright photo.', 'Dark photo.'],
-            ['Sharp photo.', 'Blurry photo.'],
-            ['Noisy photo.', 'Clean photo.'],
-            ['Colorful photo.', 'Dull photo.'],
-            ['High contrast photo.', 'Low contrast photo.'],
         ]),
+
+        # test degradation attributes
+        # classnames=[
+        #     ['Good photo.', 'Bad photo.'],
+        #     ['Bright photo.', 'Dark photo.'],
+        #     ['Sharp photo.', 'Blurry photo.'],
+        #     ['Noisy photo.', 'Clean photo.'],
+        #     ['Colorful photo.', 'Dull photo.'],
+        #     ['High contrast photo.', 'Low contrast photo.'],
+        # ]),
 
         # test AVA attributes
         # classnames=[
@@ -32,7 +32,8 @@ model = dict(
     pixel_loss=dict(type='MSELoss', loss_weight=1.0, reduction='mean'))
 # model training and testing settings
 train_cfg = dict(fix_iter=5000)
-test_cfg = dict(metrics=['PSNR'], crop_border=0)
+# test_cfg = dict(metrics=['PSNR'], crop_border=0)
+test_cfg = dict(metrics=['L1DIS'], crop_border=0)
 
 # dataset settings
 train_dataset_type = 'IQAKoniqDataset'
@@ -97,8 +98,10 @@ demo_pipeline = [
 ]
 
 data = dict(
-    workers_per_gpu=6,
-    train_dataloader=dict(samples_per_gpu=64, drop_last=True),  # 2 gpus
+    # workers_per_gpu=6,
+    workers_per_gpu=1,
+    # train_dataloader=dict(samples_per_gpu=64, drop_last=True),  # 2 gpus
+    train_dataloader=dict(samples_per_gpu=1, drop_last=False),  # 2 gpus
     val_dataloader=dict(samples_per_gpu=1),
     test_dataloader=dict(samples_per_gpu=1, workers_per_gpu=1),
 
@@ -108,22 +111,22 @@ data = dict(
         times=100,
         dataset=dict(
             type=train_dataset_type,
-            img_folder=r'D:\Dataset\koniq10k/512x384/',
-            ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+            img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
+            ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
             pipeline=train_pipeline,
             test_mode=False)),
     # val
     val=dict(
         type=val_dataset_type,
-        img_folder=r'D:\Dataset\koniq10k/512x384/',
-        ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+        img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
+        ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
         pipeline=test_pipeline,
         test_mode=True),
     # test
     test=dict(
         type=val_dataset_type,
-        img_folder=r'D:\Dataset\koniq10k/512x384/',
-        ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+        img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
+        ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
         pipeline=test_pipeline,
         test_mode=True),
 )
@@ -136,21 +139,27 @@ optimizers = dict(
 
 # learning policy
 # total_iters = 500000
-total_iters = 100000
+# total_iters = 100000
+total_iters = 5000
 lr_config = dict(
     policy='CosineRestart',
     by_epoch=False,
-    periods=[300000],
+    # periods=[300000],
+    # periods=[30000],
+    periods=[3000],
     restart_weights=[1],
     min_lr=1e-7)
 
 # checkpoint_config = dict(interval=50000, save_optimizer=True, by_epoch=False)
-checkpoint_config = dict(interval=10000, save_optimizer=True, by_epoch=False)
+# checkpoint_config = dict(interval=10000, save_optimizer=True, by_epoch=False)
+checkpoint_config = dict(interval=500, save_optimizer=True, by_epoch=False)
 # remove gpu_collect=True in non distributed training
 # evaluation = dict(interval=10000, save_image=False, gpu_collect=True)
-evaluation = dict(interval=5000, save_image=False)
+# evaluation = dict(interval=5000, save_image=False)
+evaluation = dict(interval=500, save_image=False)
 log_config = dict(
-    interval=100,
+    # interval=100,
+    interval=20,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=False),
         # dict(type='TensorboardLoggerHook'),

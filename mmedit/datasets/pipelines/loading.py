@@ -96,6 +96,12 @@ class LoadImageFromFile:
             if img.ndim == 2:
                 img = np.expand_dims(img, axis=2)
 
+        if np.min(img.shape[:2]) < 50:
+            old_shape = img.shape[:2]
+            scale = 50 / np.min(old_shape)
+            img = mmcv.imrescale(img, scale)
+            print(old_shape, '->', img.shape[:2])
+
         results[self.key] = img
         results[f'{self.key}_path'] = filepath
         results[f'{self.key}_ori_shape'] = img.shape
@@ -193,6 +199,12 @@ class LoadImageFromFileList(LoadImageFromFile):
 
             if img.ndim == 2:
                 img = np.expand_dims(img, axis=2)
+
+            if np.min(img.shape[:2]) < 50:
+                old_shape = img.shape[:2]
+                scale = 50 / np.min(old_shape)
+                img = mmcv.imrescale(img, scale)
+                print(old_shape, '->', img.shape[:2])
 
             imgs.append(img)
             shapes.append(img.shape)

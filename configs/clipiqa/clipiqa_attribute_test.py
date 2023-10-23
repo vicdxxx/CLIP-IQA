@@ -9,19 +9,19 @@ model = dict(
         backbone_name='RN50',
 
         # test Koniq and liveiwt dataset
-        # classnames=[
-        #     ['Good photo.', 'Bad photo.'],
-        # ]),
-
-        # test degradation attributes
         classnames=[
             ['Good photo.', 'Bad photo.'],
-            ['Bright photo.', 'Dark photo.'],
-            ['Sharp photo.', 'Blurry photo.'],
-            ['Noisy photo.', 'Clean photo.'],
-            ['Colorful photo.', 'Dull photo.'],
-            ['High contrast photo.', 'Low contrast photo.'],
         ]),
+
+        # test degradation attributes
+        # classnames=[
+        #     ['Good photo.', 'Bad photo.'],
+        #     ['Bright photo.', 'Dark photo.'],
+        #     ['Sharp photo.', 'Blurry photo.'],
+        #     ['Noisy photo.', 'Clean photo.'],
+        #     ['Colorful photo.', 'Dull photo.'],
+        #     ['High contrast photo.', 'Low contrast photo.'],
+        # ]),
 
         # test AVA attributes
         # classnames=[
@@ -37,7 +37,7 @@ model = dict(
 # model training and testing settings
 train_cfg = dict(fix_iter=5000)
 test_cfg = dict(metrics=['PSNR'], crop_border=0)
-# test_cfg = dict(metrics=['l1dis'], crop_border=0)
+# test_cfg = dict(metrics=['L1DIS'], crop_border=0)
 
 # dataset settings
 train_dataset_type = 'IQAKoniqDataset'
@@ -148,22 +148,26 @@ data = dict(
         times=100,
         dataset=dict(
             type=train_dataset_type,
-            img_folder=r'D:\Dataset\koniq10k/512x384/',
-            ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+            # img_folder=r'D:\Dataset\koniq10k/512x384/',
+            # ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+            img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
+            ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
             pipeline=train_pipeline,
             test_mode=False)),
     # val
     val=dict(
         type=val_dataset_type,
-        img_folder=r'D:\Dataset\koniq10k/512x384/',
-        ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+        # img_folder=r'D:\Dataset\koniq10k/512x384/',
+        # ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+        img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
+        ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
         pipeline=test_pipeline,
         test_mode=True),
     # test
     test=dict(
         type=val_dataset_type,
-        img_folder=r'D:\Dataset\koniq10k/512x384/',
-        ann_file='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv',
+        img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
+        ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
         pipeline=test_pipeline,
         test_mode=True),
 )

@@ -5,12 +5,19 @@ import os.path as osp
 import mmcv
 import numpy as np
 import torch
-
+import os 
 from mmedit.core import tensor2img
 from ..registry import MODELS
 from .basic_restorer import BasicRestorer
 from ..builder import build_backbone, build_loss
 
+import plotly.graph_objects as go
+import plotly.offline as pyo
+import json
+from os.path import join
+
+result_dict = {}
+result_dict_cnt = 0
 
 @MODELS.register_module()
 class CLIPIQA(BasicRestorer):
@@ -196,8 +203,38 @@ class CLIPIQA(BasicRestorer):
         results['attributes'] = attribute_prob.cpu()
         # save image
         if save_image:
-            print('No need to save image yet.')
+            global result_dict_cnt
+            global result_dict
+            save_dir = save_path
 
+            attribute_list = ['Quality', 'Brightness', 'Sharpness', 'Noisiness', 'Colorfulness', 'Contrast']
+            attribute_list = [*attribute_list, attribute_list[0]]
+            im_name = os.path.basename(meta[0]['lq_path'])
+            attributes = attribute_prob.float().detach().cpu().numpy()[0]
+            attributes = [*attributes, attributes[0]]
+
+            result_dict[im_name] = {}
+            for i_att in range(len(attribute_list)):
+                att_name = attribute_list[i_att]
+                att_value = attributes[i_att]
+                result_dict[im_name][att_name] = float(att_value)
+            result_dict_cnt += 1
+            if result_dict_cnt % 1==0:
+                result_path = join(save_dir, 'result_dict.json')
+                with open(result_path, 'w') as f:
+                    json.dump(result_dict, f, indent=4)
+            fig = go.Figure(
+                data=[
+                    go.Scatterpolar(r=attributes, theta=attribute_list, fill='toself'),
+                ],
+                layout=go.Layout(
+                    title=go.layout.Title(text='Attributes'),
+                    polar={'radialaxis': {'visible': True}},
+                    showlegend=False,
+                )
+            )
+            fig.update_xaxes(tickfont_family="Arial Black")
+            fig.write_image(os.path.join(save_dir, im_name+'.svg'), engine="kaleido")
         return results
 
 @MODELS.register_module()

@@ -53,7 +53,8 @@ def parse_args():
 class Arg:
   def __init__(self):
     self.config='configs/clipiqa/clipiqa_attribute_test.py'
-    self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official\iter_80000.pth'
+    # self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official\iter_80000.pth'
+    self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq\latest.pth'
     self.device=0
 
 def main():
@@ -66,11 +67,12 @@ def main():
 
 
     attribute_list = ['Quality', 'Brightness', 'Sharpness', 'Noisiness', 'Colorfulness', 'Contrast']
+    # attribute_list = ['Quality', ]
     # attribute_list = ['Aesthetic', 'Happy', 'Natural', 'New', 'Scary', 'Complex']
     attribute_list = [*attribute_list, attribute_list[0]]
 
     angles = np.linspace(0, 2*np.pi, len(attribute_list), endpoint=False)
-    save_dir = r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box_IQA_finetuning_on_KonIQ'
+    save_dir = r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box_IQA_finetuning_on_Weed'
     result_name=  'result_dict.json'
     exception_name=  'exception_dict.json'
     result_path = join(save_dir, result_name)
@@ -92,7 +94,9 @@ def main():
             attributes = attributes.float().detach().cpu().numpy()[0]
             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             print(attributes)
-
+            if len(attributes) < len(attribute_list):
+                add_num = len(attribute_list) - len(attributes) -1
+                attributes = np.array(attributes.tolist()+[1.0]*add_num)
             attributes = [*attributes, attributes[0]]
 
             result_dict[im_name] = {}
