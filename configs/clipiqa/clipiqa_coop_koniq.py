@@ -183,7 +183,7 @@ dist_params = dict(backend='nccl')
 log_level = 'INFO'
 
 work_dir = f'/work_dirs/{exp_name}'
-load_from = 'xxx/iter_80000.pth'
+load_from = r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official/iter_80000.pth'
 resume_from = None
 workflow = [('train', 1)]
 find_unused_parameters = True

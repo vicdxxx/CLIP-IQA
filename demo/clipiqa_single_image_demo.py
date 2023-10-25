@@ -60,7 +60,7 @@ class Arg:
   def __init__(self):
     self.config='configs/clipiqa/clipiqa_attribute_test.py'
     # self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official\iter_80000.pth'
-    self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq\latest.pth'
+    self.checkpoint=r'C:\Users\AFSALab\OneDriveBD\Dataset\WeedDataSample\DetectionLambsquarters\work_dirs\latest.pth'
     if platform.system().lower().startswith('lin'):
         self.checkpoint='/content/gdrive/MyDrive/WeedLambsquarter/work_dirs/latest.pth'
     self.device=0
@@ -97,15 +97,17 @@ def main():
                 exception_dict = json.load(f)
     cnt = 0
     for im_path in tqdm(im_paths):
-        if cnt % 50 == 0:
+        if cnt % 100 == 0:
             with open(result_path, 'w') as f:
                 json.dump(result_dict, f, indent=4)
         cnt += 1
         im_name = os.path.basename(im_path)
         #ipdb.set_trace(context=20)
         save_path = os.path.join(save_dir, im_name+'.svg')
-        if os.path.exists(save_path):
+        if im_name in result_dict:
             continue
+        # if os.path.exists(save_path):
+        #     continue
         try:
             output, attributes = restoration_inference(model, os.path.join(im_path), return_attributes=True)
             
@@ -137,7 +139,7 @@ def main():
 
             fig.update_xaxes(tickfont_family="Arial Black")
 
-            fig.write_image(, engine="kaleido")
+            fig.write_image(save_path, engine="kaleido")
         except Exception as e:
             print(im_name, e)
             exception_dict[im_name] = str(e)

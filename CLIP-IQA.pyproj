@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{c57caa49-cf26-4abd-b109-68cb6c902f30}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>tools\train.py</StartupFile>
+    <StartupFile>demo\clipiqa_single_image_demo.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
