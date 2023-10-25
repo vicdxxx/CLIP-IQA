@@ -141,12 +141,14 @@ optimizers = dict(
 # total_iters = 500000
 # total_iters = 100000
 total_iters = 5000
+
+#https://mmcv.readthedocs.io/en/v1.3.6/_modules/mmcv/runner/hooks/lr_updater.html
 lr_config = dict(
     policy='CosineRestart',
     by_epoch=False,
     # periods=[300000],
     # periods=[30000],
-    periods=[3000],
+    periods=[3000, 5000],
     restart_weights=[1],
     min_lr=1e-7)
 
