@@ -1,3 +1,6 @@
+import platform
+
+print(platform.system())
 import os
 import cv2
 import torch
@@ -16,9 +19,12 @@ def list_dir(path, list_name, extension):
     except Exception as e:
         print(e)
     return list_name
-im_paths = list_dir(r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters', [], '.jpg')
-len(im_paths)
+im_dir = r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters'
+if platform.system().lower().startswith('lin'):
+    im_dir = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/weed_all_object_in_box/Lambsquarters'
 
+im_paths = list_dir(im_dir, [], '.jpg')
+len(im_paths)
 """
 save all results as json files
 
@@ -55,6 +61,8 @@ class Arg:
     self.config='configs/clipiqa/clipiqa_attribute_test.py'
     # self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official\iter_80000.pth'
     self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq\latest.pth'
+    if platform.system().lower().startswith('lin'):
+        self.checkpoint='/content/gdrive/MyDrive/WeedLambsquarter/work_dirs/latest.pth'
     self.device=0
 
 def main():
@@ -73,23 +81,34 @@ def main():
 
     angles = np.linspace(0, 2*np.pi, len(attribute_list), endpoint=False)
     save_dir = r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box_IQA_finetuning_on_Weed'
+    if platform.system().lower().startswith('lin'):
+        save_dir = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/weed_all_object_in_box_IQA_finetuning_on_Weed'
     result_name=  'result_dict.json'
     exception_name=  'exception_dict.json'
     result_path = join(save_dir, result_name)
     exception_path = join(save_dir, exception_name)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
+    if os.path.exists(result_path):
+            with open(result_path, 'r') as f:
+                result_dict = json.load(f)
+    if os.path.exists(exception_path):
+            with open(exception_path, 'r') as f:
+                exception_dict = json.load(f)
     cnt = 0
     for im_path in tqdm(im_paths):
-        if cnt%50==0:
+        if cnt % 50 == 0:
             with open(result_path, 'w') as f:
                 json.dump(result_dict, f, indent=4)
-        cnt+=1
+        cnt += 1
         im_name = os.path.basename(im_path)
         #ipdb.set_trace(context=20)
+        save_path = os.path.join(save_dir, im_name+'.svg')
+        if os.path.exists(save_path):
+            continue
         try:
             output, attributes = restoration_inference(model, os.path.join(im_path), return_attributes=True)
-
+            
             output = output.float().detach().cpu().numpy()
             attributes = attributes.float().detach().cpu().numpy()[0]
             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
@@ -118,7 +137,7 @@ def main():
 
             fig.update_xaxes(tickfont_family="Arial Black")
 
-            fig.write_image(os.path.join(save_dir, im_name+'.svg'), engine="kaleido")
+            fig.write_image(, engine="kaleido")
         except Exception as e:
             print(im_name, e)
             exception_dict[im_name] = str(e)

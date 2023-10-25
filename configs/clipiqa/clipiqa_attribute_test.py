@@ -36,8 +36,8 @@ model = dict(
     pixel_loss=dict(type='MSELoss', loss_weight=1.0, reduction='mean'))
 # model training and testing settings
 train_cfg = dict(fix_iter=5000)
-test_cfg = dict(metrics=['PSNR'], crop_border=0)
-# test_cfg = dict(metrics=['L1DIS'], crop_border=0)
+# test_cfg = dict(metrics=['PSNR'], crop_border=0)
+test_cfg = dict(metrics=['L1DIS'], crop_border=0)
 
 # dataset settings
 train_dataset_type = 'IQAKoniqDataset'

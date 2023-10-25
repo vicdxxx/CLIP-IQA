@@ -1,3 +1,8 @@
+"""
+train weed 170 images 5000 iterations
+train loss_pix: 0.0037, loss: 0.0037
+val L1DIS: 0.0938
+"""
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import copy

@@ -1,3 +1,9 @@
+"""
+classnames can be change to fit weed images, like Good weed photo, Bad weed photo
+not freeze all pre-trained parameters?
+self.regressor is learnable? (if self.num_clip > 1: used it)
+prompt_learner is learnable?
+"""
 import platform
 
 print(platform.system())
@@ -158,7 +164,7 @@ lr_config = dict(
 
 # checkpoint_config = dict(interval=50000, save_optimizer=True, by_epoch=False)
 # checkpoint_config = dict(interval=10000, save_optimizer=True, by_epoch=False)
-checkpoint_config = dict(interval=500, save_optimizer=True, by_epoch=False)
+checkpoint_config = dict(interval=1000, save_optimizer=True, by_epoch=False)
 # remove gpu_collect=True in non distributed training
 # evaluation = dict(interval=10000, save_image=False, gpu_collect=True)
 # evaluation = dict(interval=5000, save_image=False)
@@ -185,8 +191,8 @@ find_unused_parameters = True
 if platform.system().lower().startswith('lin'):
     img_folder = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/weed_all_object_in_box/Lambsquarters'
     ann_file = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/Lambsquarters_distributions_sets.csv'
-    data['train']['img_folder'] = img_folder
-    data['train']['ann_file'] = ann_file
+    data['train']['dataset']['img_folder'] = img_folder
+    data['train']['dataset']['ann_file'] = ann_file
     data['val']['img_folder'] = img_folder
     data['val']['ann_file'] = ann_file
     data['test']['img_folder'] = img_folder

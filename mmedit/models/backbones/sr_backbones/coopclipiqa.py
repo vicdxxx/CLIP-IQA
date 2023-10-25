@@ -20,6 +20,7 @@ from mmedit.models.components.clip.simple_tokenizer import SimpleTokenizer as _T
 import copy
 from torchvision import models
 
+
 def load_clip_to_cpu(backbone_name):
     url = clip._MODELS[backbone_name]
     model_path = clip._download(url, os.path.expanduser("~/.cache/clip"))
@@ -35,6 +36,7 @@ def load_clip_to_cpu(backbone_name):
     model = clip.build_model(state_dict or model.state_dict())
 
     return model
+
 
 class TextEncoder(nn.Module):
     def __init__(self, clip_model):
@@ -79,7 +81,7 @@ class PromptLearner(nn.Module):
             prompt = clip.tokenize(ctx_init)
             with torch.no_grad():
                 embedding = self.clip_model.token_embedding(prompt).type(dtype)
-            ctx_vectors = embedding[0, 1 : 1 + n_ctx, :]
+            ctx_vectors = embedding[0, 1: 1 + n_ctx, :]
             prompt_prefix = ctx_init
 
         else:
@@ -110,7 +112,7 @@ class PromptLearner(nn.Module):
         # but they should be ignored in load_model() as we want to use
         # those computed using the current class names
         self.register_buffer("token_prefix", embedding[:, :1, :])  # SOS
-        self.register_buffer("token_suffix", embedding[:, 1 + n_ctx :, :])  # CLS, EOS
+        self.register_buffer("token_suffix", embedding[:, 1 + n_ctx:, :])  # CLS, EOS
 
         self.n_cls = n_cls
         self.n_ctx = n_ctx
@@ -144,11 +146,11 @@ class PromptLearner(nn.Module):
             prompts = []
             for i in range(self.n_cls):
                 name_len = self.name_lens[i]
-                prefix_i = prefix[i : i + 1, :, :]
-                class_i = suffix[i : i + 1, :name_len, :]
-                suffix_i = suffix[i : i + 1, name_len:, :]
-                ctx_i_half1 = ctx[i : i + 1, :half_n_ctx, :]
-                ctx_i_half2 = ctx[i : i + 1, half_n_ctx:, :]
+                prefix_i = prefix[i: i + 1, :, :]
+                class_i = suffix[i: i + 1, :name_len, :]
+                suffix_i = suffix[i: i + 1, name_len:, :]
+                ctx_i_half1 = ctx[i: i + 1, :half_n_ctx, :]
+                ctx_i_half2 = ctx[i: i + 1, half_n_ctx:, :]
                 prompt = torch.cat(
                     [
                         prefix_i,     # (1, 1, dim)
@@ -166,10 +168,10 @@ class PromptLearner(nn.Module):
             prompts = []
             for i in range(self.n_cls):
                 name_len = self.name_lens[i]
-                prefix_i = prefix[i : i + 1, :, :]
-                class_i = suffix[i : i + 1, :name_len, :]
-                suffix_i = suffix[i : i + 1, name_len:, :]
-                ctx_i = ctx[i : i + 1, :, :]
+                prefix_i = prefix[i: i + 1, :, :]
+                class_i = suffix[i: i + 1, :name_len, :]
+                suffix_i = suffix[i: i + 1, name_len:, :]
+                ctx_i = ctx[i: i + 1, :, :]
                 prompt = torch.cat(
                     [
                         prefix_i,  # (1, 1, dim)
@@ -187,11 +189,13 @@ class PromptLearner(nn.Module):
 
         return prompts
 
+
 class CustomCLIP(nn.Module):
     def __init__(self, classnames, backbone_name='ViT-B/32', n_ctx=16, ctx_init="", cfg_imsize=224, class_specify=False, class_token_position='middle'):
         super().__init__()
         clip_model = load_clip_to_cpu(backbone_name)
-        self.prompt_learner = PromptLearner(classnames, clip_model, n_ctx=n_ctx, ctx_init=ctx_init, cfg_imsize=cfg_imsize, class_specify=class_specify, class_token_position=class_token_position)
+        self.prompt_learner = PromptLearner(classnames, clip_model, n_ctx=n_ctx, ctx_init=ctx_init, cfg_imsize=cfg_imsize,
+                                            class_specify=class_specify, class_token_position=class_token_position)
         self.tokenized_prompts = self.prompt_learner.tokenized_prompts
         self.image_encoder = clip_model.visual
         self.text_encoder = TextEncoder(clip_model)
@@ -223,6 +227,7 @@ class CustomCLIP(nn.Module):
 
         return logits.softmax(dim=-1)
 
+
 class NonLinearRegressor(nn.Module):
     def __init__(self, n_input, n_output, n_hidden=128):
         super().__init__()
@@ -237,6 +242,7 @@ class NonLinearRegressor(nn.Module):
         x = self.lrelu(self.linear_1(logits))
         x = self.lrelu(self.linear_2(x))
         return self.linear_3(x)
+
 
 @BACKBONES.register_module()
 class CLIPIQAPredictor(nn.Module):
@@ -289,6 +295,7 @@ class CLIPIQAPredictor(nn.Module):
         elif pretrained is not None:
             raise TypeError(f'"pretrained" must be a str or None. '
                             f'But received {type(pretrained)}.')
+
 
 @BACKBONES.register_module()
 class CLIPIQAFixed(nn.Module):
