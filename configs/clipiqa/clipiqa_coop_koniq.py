@@ -193,3 +193,6 @@ if platform.system().lower().startswith('lin'):
     data['test']['ann_file'] = ann_file
     load_from = '/content/iter_80000.pth'
     work_dir = '/content/gdrive/MyDrive/WeedLambsquarter/work_dirs'
+
+print(img_folder)
+print(ann_file)
