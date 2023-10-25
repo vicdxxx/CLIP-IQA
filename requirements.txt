@@ -6,3 +6,4 @@ ftfy
 regex
 einops
 pandas
+plotly

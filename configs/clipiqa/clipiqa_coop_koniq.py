@@ -1,3 +1,7 @@
+import platform
+
+print(platform.system())
+
 exp_name = 'clipiqa_coop_koniq'
 
 # model settings
@@ -110,11 +114,11 @@ data = dict(
         type='RepeatDataset',
         times=100,
         dataset=dict(
-            type=train_dataset_type,
-            img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
-            ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
-            pipeline=train_pipeline,
-            test_mode=False)),
+        type=train_dataset_type,
+        img_folder=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box\Lambsquarters/',
+        ann_file=r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box/Lambsquarters_distributions_sets.csv',
+        pipeline=train_pipeline,
+        test_mode=False)),
     # val
     val=dict(
         type=val_dataset_type,
@@ -149,7 +153,7 @@ lr_config = dict(
     # periods=[300000],
     # periods=[30000],
     periods=[3000, 5000],
-    restart_weights=[1],
+    restart_weights=[1, 1],
     min_lr=1e-7)
 
 # checkpoint_config = dict(interval=50000, save_optimizer=True, by_epoch=False)
@@ -171,8 +175,21 @@ visual_config = None
 # runtime settings
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = f'./work_dirs/{exp_name}'
-load_from = None
+
+work_dir = f'/work_dirs/{exp_name}'
+load_from = 'xxx/iter_80000.pth'
 resume_from = None
 workflow = [('train', 1)]
 find_unused_parameters = True
+
+if platform.system().lower().startswith('lin'):
+    img_folder = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/weed_all_object_in_box/Lambsquarters'
+    ann_file = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/Lambsquarters_distributions_sets.csv'
+    data['train']['img_folder'] = img_folder
+    data['train']['ann_file'] = ann_file
+    data['val']['img_folder'] = img_folder
+    data['val']['ann_file'] = ann_file
+    data['test']['img_folder'] = img_folder
+    data['test']['ann_file'] = ann_file
+    load_from = '/content/iter_80000.pth'
+    work_dir = '/content/gdrive/MyDrive/WeedLambsquarter/work_dirs'
