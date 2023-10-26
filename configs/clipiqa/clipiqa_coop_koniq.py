@@ -8,7 +8,7 @@ import platform
 
 print(platform.system())
 
-exp_name = 'clipiqa_coop_koniq'
+exp_name = 'clipiqa_weed_lambsquaters_6_attributes'
 
 # model settings
 model = dict(
@@ -16,19 +16,19 @@ model = dict(
     generator=dict(
         type='CLIPIQAPredictor',
         backbone_name='RN50',
-        classnames=[
-            ['Good photo.', 'Bad photo.'],
-        ]),
-
-        # test degradation attributes
         # classnames=[
         #     ['Good photo.', 'Bad photo.'],
-        #     ['Bright photo.', 'Dark photo.'],
-        #     ['Sharp photo.', 'Blurry photo.'],
-        #     ['Noisy photo.', 'Clean photo.'],
-        #     ['Colorful photo.', 'Dull photo.'],
-        #     ['High contrast photo.', 'Low contrast photo.'],
         # ]),
+
+        # test degradation attributes
+        classnames=[
+            ['Good photo.', 'Bad photo.'],
+            ['Bright photo.', 'Dark photo.'],
+            ['Sharp photo.', 'Blurry photo.'],
+            ['Noisy photo.', 'Clean photo.'],
+            ['Colorful photo.', 'Dull photo.'],
+            ['High contrast photo.', 'Low contrast photo.'],
+        ]),
 
         # test AVA attributes
         # classnames=[
