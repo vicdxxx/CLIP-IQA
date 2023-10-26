@@ -182,7 +182,7 @@ visual_config = None
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 
-work_dir = f'/work_dirs/{exp_name}'
+work_dir = f'D:/BoyangDeng/WeedLambsquarter/CLIP-IQA/work_dirs/{exp_name}'
 load_from = r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official/iter_80000.pth'
 resume_from = None
 workflow = [('train', 1)]
@@ -200,5 +200,5 @@ if platform.system().lower().startswith('lin'):
     load_from = '/content/iter_80000.pth'
     work_dir = '/content/gdrive/MyDrive/WeedLambsquarter/work_dirs'
 
-print(img_folder)
-print(ann_file)
+print(data['train']['dataset']['img_folder'])
+print(data['train']['dataset']['ann_file'] )
