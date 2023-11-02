@@ -60,7 +60,8 @@ class Arg:
   def __init__(self):
     self.config='configs/clipiqa/clipiqa_attribute_test.py'
     # self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official\iter_80000.pth'
-    self.checkpoint=r'C:\Users\AFSALab\OneDriveBD\Dataset\WeedDataSample\DetectionLambsquarters\work_dirs\latest.pth'
+    # self.checkpoint=r'C:\Users\AFSALab\OneDriveBD\Dataset\WeedDataSample\DetectionLambsquarters\work_dirs\latest.pth'
+    self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\latest.pth'
     if platform.system().lower().startswith('lin'):
         self.checkpoint='/content/gdrive/MyDrive/WeedLambsquarter/work_dirs/latest.pth'
     self.device=0
@@ -80,9 +81,9 @@ def main():
     attribute_list = [*attribute_list, attribute_list[0]]
 
     angles = np.linspace(0, 2*np.pi, len(attribute_list), endpoint=False)
-    save_dir = r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box_IQA_finetuning_on_Weed'
+    save_dir = r'D:\Dataset\WeedData\DetectionLambsquarters\weed_all_object_in_box_IQA_finetuning_on_Weed_6_attributes'
     if platform.system().lower().startswith('lin'):
-        save_dir = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/weed_all_object_in_box_IQA_finetuning_on_Weed'
+        save_dir = '/content/onedrive/Dataset/WeedDataSample/DetectionLambsquarters/weed_all_object_in_box_IQA_finetuning_on_Weed_6_attributes'
     result_name=  'result_dict.json'
     exception_name=  'exception_dict.json'
     result_path = join(save_dir, result_name)

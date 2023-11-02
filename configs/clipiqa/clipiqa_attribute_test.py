@@ -9,19 +9,19 @@ model = dict(
         backbone_name='RN50',
 
         # test Koniq and liveiwt dataset
-        classnames=[
-            ['Good photo.', 'Bad photo.'],
-        ]),
-
-        # test degradation attributes
         # classnames=[
         #     ['Good photo.', 'Bad photo.'],
-        #     ['Bright photo.', 'Dark photo.'],
-        #     ['Sharp photo.', 'Blurry photo.'],
-        #     ['Noisy photo.', 'Clean photo.'],
-        #     ['Colorful photo.', 'Dull photo.'],
-        #     ['High contrast photo.', 'Low contrast photo.'],
         # ]),
+
+        # test degradation attributes
+        classnames=[
+            ['Good photo.', 'Bad photo.'],
+            ['Bright photo.', 'Dark photo.'],
+            ['Sharp photo.', 'Blurry photo.'],
+            ['Noisy photo.', 'Clean photo.'],
+            ['Colorful photo.', 'Dull photo.'],
+            ['High contrast photo.', 'Low contrast photo.'],
+        ]),
 
         # test AVA attributes
         # classnames=[

@@ -51,7 +51,8 @@ class Arg:
   def __init__(self):
     self.config='configs/clipiqa/clipiqa_attribute_test.py'
     # self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\official\iter_80000.pth'
-    self.checkpoint=r'C:\Users\AFSALab\OneDriveBD\Dataset\WeedDataSample\DetectionLambsquarters\work_dirs\latest.pth'
+    # self.checkpoint=r'C:\Users\AFSALab\OneDriveBD\Dataset\WeedDataSample\DetectionLambsquarters\work_dirs\latest.pth'
+    self.checkpoint=r'D:\BoyangDeng\WeedLambsquarter\CLIP-IQA\work_dirs\clipiqa_coop_koniq_6_attributes\latest.pth'
     self.device=0
     # self.csv_path='D:/Dataset/koniq10k/koniq10k_distributions_sets.csv'
     self.csv_path=r'C:\Users\AFSALab\OneDriveBD\Dataset\WeedDataSample\DetectionLambsquarters/Lambsquarters_distributions_sets.csv'
